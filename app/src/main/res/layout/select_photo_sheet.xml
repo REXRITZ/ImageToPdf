@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    style="@style/RoundedBottomSheet"
+    tools:context=".fragments.SelectPhotoFragment">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_sheet_item"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/bottom_sheet_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:text="@string/select_photos_sheet"
+        android:paddingHorizontal="@dimen/dimen_16" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_marginHorizontal="@dimen/dimen_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/select_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_sheet_item"
+        android:paddingHorizontal="@dimen/dimen_16"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:drawablePadding="@dimen/dimen_32"
+        android:text="@string/select_from_gallery"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        app:drawableStartCompat="@drawable/ic_baseline_photo_library_24" />
+
+    <TextView
+        android:id="@+id/select_camera"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_sheet_item"
+        android:paddingHorizontal="@dimen/dimen_16"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:drawablePadding="@dimen/dimen_32"
+        android:text="@string/select_from_camera"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        app:drawableStartCompat="@drawable/ic_baseline_photo_camera_24" />
+
+</LinearLayout>

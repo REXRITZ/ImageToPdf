@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="checked">#6E000000</color>
+    <color name="primary">#1a73e8</color>
+    <color name="primaryVariant">#FAFAFA</color>
+    <color name="stroke">#1f000000</color>
+
+    <color name="actionmodetextcolor">#FFFFFFFF</color>
+	<color name="folder_icon_stroke">#CFD7E5</color>
+    <color name="folder_icon_bg">#EEF1F6</color>
+</resources>

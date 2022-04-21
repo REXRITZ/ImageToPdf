@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pdf Converter</string>
+    <string name="permission_rationale">This app needs storage permission to load pictures from app</string>
+    <string name="dialog_rename_title">Rename file</string>
+    <string name="empty_file_msg">file name cannot be empty</string>
+    <string name="special_char_msg"><![CDATA[Avoid special characters /\\:*?\"<>|]]></string>
+    <string name="drag_items_msg">Drag and hold to select items</string>
+    <string name="select_item_msg">Long press to select items</string>
+    <string name="dialog_orientation_title">Select Orientation</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="dialog_pdfquality">Select Pdf quality</string>
+    <string name="file_name_exists_msg">File with given name already exists</string>
+    <string name="valid_password_msg">Please enter valid password</string>
+    <string name="dialog_savepdf_title">Saving Pdf</string>
+    <string name="savepdf_converting_msg">Converting… %d%%</string>
+    <string name="settings">Settings</string>
+    <string name="create_new_pdf">Create new Pdf</string>
+    <string name="select_photos_sheet">Select Photos</string>
+    <string name="select_from_gallery">Select from Gallery</string>
+    <string name="select_from_camera">Select from Camera</string>
+    <string name="rename">Rename</string>
+    <string name="share">Share</string>
+    <string name="open_with">Open with</string>
+    <string name="delete">Delete</string>
+    <string name="file_name">File name</string>
+    <string name="options">Options</string>
+    <string name="next">Next</string>
+    <string name="add_more_photos">Add more photos</string>
+    <string name="rearrange_photos">Rearrange photos</string>
+    <string name="pdf_file_name">Pdf File Name</string>
+    <string name="password">Password</string>
+    <string name="image_quality">Image Quality</string>
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
+    <string name="low">Low</string>
+    <string name="auto">Auto</string>
+    <string name="portrait">Portrait</string>
+    <string name="landscape">Landscape</string>
+    <string name="orientation">Orientation</string>
+    <string name="convert_to_pdf">Convert to Pdf</string>
+    <string name="open">Open</string>
+    <string name="share_app">Share App</string>
+    <string name="rate_app">Rate App</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="version">Version</string>
+    <string name="clipboard_msg">Text copied to clipboard</string>
+    <string name="emptylistmsg">Cannot create pdf with no images!</string>
+    <string name="done">Done</string>
+    <string name="select_all">Select all</string>
+    <string name="delete_photos">Delete photos</string>
+    <string name="click_button_below_to_create_new_pdf">Click button below to create new pdf</string>
+    <string name="processing_images">Processing images</string>
+    <string name="update_msg">An update has been downloaded</string>
+    <string name="share_msg">Hello, Welcome to %s.An app that can convert any image to PDF documents. Fast, easy, and 100%% free.\nGet it at %s</string>
+    <string-array name="quality">
+        <item>@string/low</item>
+        <item>@string/medium</item>
+        <item>@string/high</item>
+    </string-array>
+
+    <string-array name="orientation">
+        <item>@string/auto</item>
+        <item>@string/portrait</item>
+        <item>@string/landscape</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+
+</resources>

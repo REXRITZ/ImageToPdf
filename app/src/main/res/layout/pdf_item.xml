@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="@dimen/dimen_6">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/pdfThumbnail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:strokeWidth="1dp"
+        android:scaleType="centerCrop"
+        app:strokeColor="@color/stroke"
+        app:srcCompat="@drawable/ic_pdf_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:shapeAppearance="@style/RoundedImageStyle" />
+
+    <TextView
+        android:id="@+id/file_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_16"
+        android:layout_marginEnd="@dimen/dimen_12"
+        android:singleLine="true"
+        android:text="IMGTOPDF_12323_545.pdf"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline1"
+        app:layout_constraintEnd_toStartOf="@id/more_options"
+        app:layout_constraintStart_toEndOf="@id/pdfThumbnail" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/lockImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:shapeAppearanceOverlay="@style/CircleImageStyle"
+        app:contentPadding="@dimen/dimen_2"
+        android:visibility="gone"
+        app:layout_constraintDimensionRatio="1:1"
+        android:src="@drawable/ic_baseline_lock_24"
+        android:layout_marginStart="@dimen/dimen_16"
+        app:layout_constraintStart_toEndOf="@id/pdfThumbnail"
+        app:layout_constraintTop_toTopOf="@id/file_size"
+        app:layout_constraintBottom_toBottomOf="@id/file_size"/>
+
+    <TextView
+        android:id="@+id/file_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_16"
+        android:layout_marginTop="@dimen/dimen_4"
+        android:text="4.1 MB"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        app:layout_constraintStart_toEndOf="@id/lockImageView"
+        app:layout_constraintTop_toBottomOf="@+id/file_name" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_24"
+        android:layout_marginTop="@dimen/dimen_4"
+        android:layout_marginEnd="@dimen/dimen_12"
+        android:text="03/04/2022 10:50"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        app:layout_constraintEnd_toStartOf="@+id/more_options"
+        app:layout_constraintStart_toEndOf="@id/file_size"
+        app:layout_constraintTop_toBottomOf="@+id/file_name" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/more_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimen_6"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_baseline_more_vert_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/CircleImageStyle" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="0.5"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

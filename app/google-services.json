@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "930832733090",
+    "project_id": "imagetopdfdevelop",
+    "storage_bucket": "imagetopdfdevelop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930832733090:android:ce1d242bb1db0983aed8fb",
+        "android_client_info": {
+          "package_name": "com.ritesh.imagetopdf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930832733090-a1klldriaao8cu0lcgdola1gd4v3i7f5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ritesh.imagetopdf",
+            "certificate_hash": "a3795f50ddeb2fd81b6e37a129bcbb0890b19552"
+          }
+        },
+        {
+          "client_id": "930832733090-f7bvc1vjq1hbpnvqh8r1cehlik9lraqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg2egmQ2vqCPGSV8SkmfMlx4XLL0b6VHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930832733090-f7bvc1vjq1hbpnvqh8r1cehlik9lraqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

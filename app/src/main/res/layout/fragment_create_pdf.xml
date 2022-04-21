@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.CreatePdfFragment">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/primaryVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolBar"
+            app:title="Convert to Pdf"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/file_name_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/pdf_file_name"
+        android:layout_marginTop="@dimen/dimen_8"
+        android:layout_marginHorizontal="@dimen/dimen_16"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:helperTextEnabled="true"
+        app:helperTextTextColor="@android:color/holo_red_dark"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/password_enabled"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/password"
+        android:paddingHorizontal="@dimen/dimen_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/file_name_input" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="@dimen/dimen_6"
+        android:id="@+id/password_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginHorizontal="@dimen/dimen_16"
+        app:helperTextTextColor="@android:color/holo_red_dark"
+        app:helperTextEnabled="true"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password_enabled">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:hint="@string/password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/quality"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dimen_sheet_item"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/dimen_16"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/password_input">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9"
+            android:gravity="center_vertical"
+            android:text="@string/image_quality"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+        <TextView
+            android:id="@+id/quality_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/high"
+            android:layout_weight="0.1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:drawablePadding="@dimen/dimen_16"
+            app:drawableEndCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/orientation"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dimen_sheet_item"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/dimen_16"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quality">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9"
+            android:gravity="center_vertical"
+            android:text="@string/orientation"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+        <TextView
+            android:id="@+id/orientation_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auto"
+            android:layout_weight="0.1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:drawablePadding="@dimen/dimen_16"
+            app:drawableEndCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createPdfBtn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dimen_sheet_item"
+        android:layout_margin="@dimen/dimen_16"
+        android:text="@string/convert_to_pdf"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        app:cornerRadius="@dimen/dimen_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
