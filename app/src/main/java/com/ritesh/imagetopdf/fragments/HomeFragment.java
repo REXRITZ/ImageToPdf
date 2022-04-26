@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,6 +41,7 @@ import com.ritesh.imagetopdf.viewmodel.PhotosDataViewModel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -91,8 +93,8 @@ public class HomeFragment extends Fragment implements PdfItemClickListener, View
         recyclerView.addItemDecoration(dividerDecoration);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
-        initPdfOptionsDialog();
         progress.setVisibility(View.VISIBLE);
+        initPdfOptionsDialog();
         viewModel.getAllPdfs().observe(getViewLifecycleOwner(), pdfDetails -> {
             if (pdfDetails.size() != 0) {
                 emptyView.setVisibility(View.GONE);
@@ -108,9 +110,7 @@ public class HomeFragment extends Fragment implements PdfItemClickListener, View
 
     private void storagePermission() {
         if(EasyPermissions.hasPermissions(requireContext(), permissions)) {
-            HomeFragmentDirections.ActionHomeFragmentToSelectPhotoFragment action =
-                    HomeFragmentDirections.actionHomeFragmentToSelectPhotoFragment(false);
-            NavHostFragment.findNavController(this).navigate(action);
+            NavHostFragment.findNavController(this).navigate(R.id.action_homeFragment_to_selectImagesFragment);
         } else {
             int PERM_CODE = 221;
             EasyPermissions.requestPermissions(
@@ -229,17 +229,17 @@ public class HomeFragment extends Fragment implements PdfItemClickListener, View
     }
 
     private void initPdfOptionsDialog() {
+        View view = View.inflate(requireContext(),R.layout.pdf_item_options, null);
         pdfOptionsDialog = new BottomSheetDialog(requireContext(),R.style.RoundedBottomSheet);
-        pdfOptionsDialog.setContentView(R.layout.pdf_item_options);
-
-        pdfOptionsDialog.findViewById(R.id.rename_file).setOnClickListener(this);
-        pdfOptionsDialog.findViewById(R.id.share_file).setOnClickListener(this);
-        pdfOptionsDialog.findViewById(R.id.delete_file).setOnClickListener(this);
-        fileName = pdfOptionsDialog.findViewById(R.id.file_name);
-        fileSize = pdfOptionsDialog.findViewById(R.id.file_size);
-        fileDate = pdfOptionsDialog.findViewById(R.id.date);
-        lock = pdfOptionsDialog.findViewById(R.id.lockImageView);
-        pdfOptionsDialog.findViewById(R.id.open_file).setOnClickListener(this);
+        pdfOptionsDialog.setContentView(view);
+        view.findViewById(R.id.rename_file).setOnClickListener(this);
+        view.findViewById(R.id.share_file).setOnClickListener(this);
+        view.findViewById(R.id.delete_file).setOnClickListener(this);
+        fileName = view.findViewById(R.id.file_name);
+        fileSize = view.findViewById(R.id.file_size);
+        fileDate = view.findViewById(R.id.date);
+        lock = view.findViewById(R.id.lockImageView);
+        view.findViewById(R.id.open_file).setOnClickListener(this);
     }
 
     private void populateOptionsView(int position) {
@@ -255,15 +255,12 @@ public class HomeFragment extends Fragment implements PdfItemClickListener, View
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults, this);
     }
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        HomeFragmentDirections.ActionHomeFragmentToSelectPhotoFragment action =
-                HomeFragmentDirections.actionHomeFragmentToSelectPhotoFragment(false);
-        NavHostFragment.findNavController(this).navigate(action);
+        NavHostFragment.findNavController(this).navigate(R.id.action_homeFragment_to_selectImagesFragment);
     }
 
     @Override

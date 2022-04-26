@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PhotosItemClickListener implements RecyclerView.OnItemTouchListener {
 
-    private final OnItemClickListener clickListener;
+    private final ImageClickListener clickListener;
     private final GestureDetector gestureDetector;
 
-    public PhotosItemClickListener(Context context, OnItemClickListener clickListener) {
+    public PhotosItemClickListener(Context context, ImageClickListener clickListener) {
         this.clickListener = clickListener;
 
         gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
@@ -29,7 +29,7 @@ public class PhotosItemClickListener implements RecyclerView.OnItemTouchListener
     public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
         View childView = rv.findChildViewUnder(e.getX(), e.getY());
         if (childView != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-            clickListener.onItemClick(rv.getChildLayoutPosition(childView));
+            clickListener.onImageClick(rv.getChildLayoutPosition(childView));
             return true;
         }
         return false;

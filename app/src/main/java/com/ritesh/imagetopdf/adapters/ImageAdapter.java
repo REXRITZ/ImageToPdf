@@ -16,34 +16,34 @@ import com.ritesh.imagetopdf.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder>{
 
     private final Context context;
-    private ArrayList<Uri> images;
-    private final OnItemClickListener clickListener;
+    private List<Uri> images;
+    private final ImageClickListener clickListener;
     private final SparseBooleanArray selectedItems;
 
-    public MyAdapter(Context context, final OnItemClickListener clickListener) {
+    public ImageAdapter(Context context, final ImageClickListener clickListener) {
         this.context = context;
         this.clickListener = clickListener;
         selectedItems = new SparseBooleanArray();
     }
 
-
-
-    public ArrayList<Uri> getImagesList() {
+    public List<Uri> getImagesList() {
         return images;
     }
 
-    public void addItemsToList(ArrayList<Uri>images) {
+    public void addItemsToList(List<Uri>images) {
         int start = 0;
-        if(this.images == null) {
-            this.images = images;
-        } else {
-            start = this.images.size();
-            this.images.addAll(images);
-        }
+//        if(this.images == null) {
+//            this.images = images;
+//        } else {
+//            start = this.images.size();
+//            this.images.addAll(images);
+//        }
+        this.images = images;
         notifyItemRangeInserted(start, images.size());
     }
 
@@ -133,8 +133,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         final ShapeableImageView photo;
         final ShapeableImageView check;
         final View checkedView;
-        final OnItemClickListener clickListener;
-        public MyViewHolder(@NonNull View itemView, OnItemClickListener clickListener) {
+        final ImageClickListener clickListener;
+        public MyViewHolder(@NonNull View itemView, ImageClickListener clickListener) {
             super(itemView);
             this.clickListener = clickListener;
             photo = itemView.findViewById(R.id.photo);
@@ -146,12 +146,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
         @Override
         public void onClick(View view) {
-            clickListener.onItemClick(getAbsoluteAdapterPosition());
+            clickListener.onImageClick(getAbsoluteAdapterPosition());
         }
 
         @Override
         public boolean onLongClick(View view) {
-            clickListener.onItemLongClick(getAbsoluteAdapterPosition());
+            clickListener.onImageLongClick(getAbsoluteAdapterPosition());
             return true;
         }
     }

@@ -4,21 +4,20 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -26,14 +25,15 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -42,21 +42,19 @@ import com.google.android.material.snackbar.Snackbar;
 import com.ritesh.imagetopdf.viewmodel.PhotosDataViewModel;
 import com.ritesh.imagetopdf.R;
 import com.ritesh.imagetopdf.adapters.ItemDecorator;
-import com.ritesh.imagetopdf.adapters.MyAdapter;
-import com.ritesh.imagetopdf.adapters.OnItemClickListener;
+import com.ritesh.imagetopdf.adapters.ImageAdapter;
+import com.ritesh.imagetopdf.adapters.ImageClickListener;
 import com.ritesh.imagetopdf.adapters.PhotosItemClickListener;
 import com.ritesh.imagetopdf.model.ClickMode;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.Executors;
 
 
-public class ChooseFragment extends Fragment implements View.OnClickListener, ActionMode.Callback, OnItemClickListener {
+public class ChooseFragment extends Fragment implements View.OnClickListener, ActionMode.Callback, ImageClickListener {
 
     private RecyclerView mainRecyclerView;
-    private MyAdapter adapter;
-    private BottomSheetDialog optionsDialog;
+    private ImageAdapter adapter;
     private PhotosDataViewModel viewModel;
     private ClickMode clickMode;
     private ActionMode actionMode;
@@ -65,19 +63,21 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
     private MaterialToolbar toolbar;
     private AlertDialog alertDialog;
     private NavController navController;
+    private CoordinatorLayout coordinatorLayout;
     public ChooseFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_choose, container, false);
+        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
         mainRecyclerView = view.findViewById(R.id.imagesRecyclerView);
         view.findViewById(R.id.go_next_btn).setOnClickListener(this);
-        LinearLayout options = view.findViewById(R.id.more_options);
-        options.setOnClickListener(this);
+        view.findViewById(R.id.more_options).setOnClickListener(this);
         bottomLayout = view.findViewById(R.id.linearLayout2);
         helpMessage = view.findViewById(R.id.help_message);
         toolbar = view.findViewById(R.id.toolBar);
@@ -88,15 +88,15 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+//        toolbar.inflateMenu(R.menu.filter_options);
         navController = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(requireActivity()).get(PhotosDataViewModel.class);
-        initOptionsDialog();
         initLoadDialog();
         clickMode = ClickMode.IDLE;
-        mainRecyclerView.addItemDecoration(new ItemDecorator((int) getResources().getDimension(R.dimen.dimen_4)));
+        mainRecyclerView.addItemDecoration(new ItemDecorator(4));
         mainRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mainRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
-        adapter = new MyAdapter(getContext(),this);
+        adapter = new ImageAdapter(getContext(),this);
         mainRecyclerView.setAdapter(adapter);
         viewModel.getRecentlyAddedPhotos().observe(getViewLifecycleOwner(), uris -> {
             if (uris != null) {
@@ -109,6 +109,18 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
         mainRecyclerView.addOnItemTouchListener(new PhotosItemClickListener(getContext(), this));
 
         toolbar.setNavigationOnClickListener(view1 -> requireActivity().onBackPressed());
+
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.select) {
+                onImageLongClick(0);
+                return true;
+            } else if(item.getItemId() == R.id.drag) {
+                clickMode = ClickMode.DRAG;
+                helpMessage.setText(R.string.drag_items_msg);
+                return true;
+            }
+            return false;
+        });
     }
 
     final ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
@@ -139,29 +151,12 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        //options dialog
-        if(id == R.id.more_options) {
-            optionsDialog.show();
-        } else if(id == R.id.add_more) {
-            optionsDialog.dismiss();
-            ChooseFragmentDirections.ActionChooseFragmentToSelectPhotoFragment action =
-                    ChooseFragmentDirections.actionChooseFragmentToSelectPhotoFragment(true);
-            navController.navigate(action);
-        } else if(id == R.id.rearrange_photos) {
-            optionsDialog.dismiss();
-            clickMode = ClickMode.DRAG;
-            showAndHideBottomLayout(View.GONE);
-            if (actionMode == null) {
-                changeColor(ContextCompat.getColor(requireContext(),R.color.primaryVariant),
-                        ContextCompat.getColor(requireContext(), R.color.primary), 300);
-                actionMode = ((AppCompatActivity)requireActivity()).startSupportActionMode(this);
-            }
-            helpMessage.setText(R.string.drag_items_msg);
-        }else if(id == R.id.go_next_btn) {
+        if(id == R.id.go_next_btn) {
             if (adapter.getItemCount() == 0) {
-                Snackbar snackbar = Snackbar.make(requireActivity().findViewById(android.R.id.content),
+                Snackbar snackbar = Snackbar.make(coordinatorLayout,
                         getString(R.string.emptylistmsg),
                         Snackbar.LENGTH_SHORT);
+                snackbar.setBackgroundTint(ContextCompat.getColor(requireContext(),R.color.primary));
                 snackbar.setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE);
                 snackbar.show();
             } else {
@@ -170,24 +165,22 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
                     viewModel.setFinalizedPhotos(adapter.getImagesList());
                     requireActivity().runOnUiThread(() -> new Handler().postDelayed(() -> {
                         alertDialog.dismiss();
-                        NavHostFragment
-                                .findNavController(ChooseFragment.this)
-                                .navigate(R.id.action_chooseFragment_to_createPdfFragment);
-                    },500));
+                        navController.navigate(R.id.action_chooseFragment_to_createPdfFragment);
+                    },300));
                 });
             }
-        } else if(id == R.id.drag_finish) {
-            clickMode = ClickMode.IDLE;
-            showAndHideBottomLayout(View.VISIBLE);
+        } else if (id == R.id.more_options) {
+            navController.navigate(R.id.action_chooseFragment_to_selectImagesFragment);
         }
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onImageClick(int position) {
         if (clickMode == ClickMode.IDLE) {
             //open using intent
-        } else {
+        } else if (clickMode == ClickMode.MULTI){
             adapter.toggleSelection(position);
+            actionMode.setTitle(String.valueOf(adapter.getSelectedItemCount()));
             if (adapter.getSelectedItemCount() == 0) {
                 stopActionMode();
             }
@@ -195,30 +188,29 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
     }
 
     @Override
-    public void onItemLongClick(int position) {
+    public void onImageLongClick(int position) {
         if(clickMode == ClickMode.IDLE) {
             clickMode = ClickMode.MULTI;
             showAndHideBottomLayout(View.GONE);
-            optionsDialog.dismiss();
         }
         if(clickMode == ClickMode.MULTI) {
-            if (actionMode == null) {
-                changeColor(ContextCompat.getColor(requireContext(),R.color.primaryVariant),
-                        ContextCompat.getColor(requireContext(), R.color.primary), 300);
-                actionMode = ((AppCompatActivity)requireActivity()).startSupportActionMode(this);
-            }
+            startActionMode();
             adapter.toggleSelection(position);
             actionMode.setTitle(String.valueOf(adapter.getSelectedItemCount()));
         }
     }
 
+    private void startActionMode() {
+        if (actionMode == null) {
+            changeColor(ContextCompat.getColor(requireContext(),R.color.primaryVariant),
+                    ContextCompat.getColor(requireContext(), R.color.primary), 300);
+            actionMode = ((AppCompatActivity)requireActivity()).startSupportActionMode(this);
+        }
+    }
+
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        if (clickMode == ClickMode.MULTI) {
-            mode.getMenuInflater().inflate(R.menu.filter_photo_contextual, menu);
-        } else if (clickMode == ClickMode.DRAG){
-            mode.getMenuInflater().inflate(R.menu.filter_drag, menu);
-        }
+        mode.getMenuInflater().inflate(R.menu.filter_photo_contextual, menu);
         return true;
     }
 
@@ -235,11 +227,7 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
             stopActionMode();
         } else if(id == R.id.select_all){
             adapter.selectAllItems();
-        } else if(id == R.id.drag_finish) {
-            clickMode = ClickMode.IDLE;
-            stopActionMode();
         }
-
         return true;
     }
 
@@ -288,13 +276,6 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
                     }
                 });
 
-    }
-
-    private void initOptionsDialog() {
-        optionsDialog = new BottomSheetDialog(requireContext(),R.style.RoundedBottomSheet);
-        optionsDialog.setContentView(R.layout.options_sheet);
-        optionsDialog.findViewById(R.id.add_more).setOnClickListener(this);
-        optionsDialog.findViewById(R.id.rearrange_photos).setOnClickListener(this);
     }
 
     private void initLoadDialog() {

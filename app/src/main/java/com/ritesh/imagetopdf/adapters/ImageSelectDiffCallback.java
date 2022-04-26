@@ -2,15 +2,14 @@ package com.ritesh.imagetopdf.adapters;
 
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.ritesh.imagetopdf.db.PdfDetail;
+import com.ritesh.imagetopdf.model.ImageItem;
 
-import java.util.ArrayList;
+import java.util.List;
 
-class DiffCallback extends DiffUtil.Callback {
+public class ImageSelectDiffCallback extends DiffUtil.Callback {
+    List<ImageItem> oldList, newList;
 
-    private final ArrayList<PdfDetail> oldList, newList;
-
-    public DiffCallback(ArrayList<PdfDetail> oldList, ArrayList<PdfDetail> newList) {
+    public ImageSelectDiffCallback(List<ImageItem> oldList, List<ImageItem> newList) {
         this.oldList = oldList;
         this.newList = newList;
     }
@@ -33,12 +32,12 @@ class DiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldList.get(oldItemPosition).id == newList.get(newItemPosition).id;
+        return oldList.get(oldItemPosition).imageUri == newList.get(newItemPosition).imageUri
+                && oldList.get(oldItemPosition).isSelected == newList.get(newItemPosition).isSelected;
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
     }
-
 }

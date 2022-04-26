@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
+import android.view.View;
 
 import java.util.Locale;
 
@@ -36,6 +37,16 @@ public class AppPref {
 
     public boolean isDarkMode() {
         return sharedPreferences.getBoolean("dark_mode", false);
+    }
+
+    public void setRateDialogVisibility() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("rate_visibility", View.GONE);
+        editor.apply();
+    }
+
+    public int getRateDialogVisibility() {
+        return sharedPreferences.getInt("rate_visibility", View.VISIBLE);
     }
 
 }

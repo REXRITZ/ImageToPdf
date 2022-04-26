@@ -9,11 +9,11 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_selectPhotoFragment"
-            app:destination="@id/selectPhotoFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_selectImagesFragment"
+            app:destination="@id/selectImagesFragment" />
     </fragment>
     <fragment
         android:id="@+id/chooseFragment"
@@ -21,24 +21,12 @@
         android:label="fragment_choose"
         tools:layout="@layout/fragment_choose" >
         <action
-            android:id="@+id/action_chooseFragment_to_selectPhotoFragment"
-            app:destination="@id/selectPhotoFragment" />
-        <action
             android:id="@+id/action_chooseFragment_to_createPdfFragment"
             app:destination="@id/createPdfFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/selectPhotoFragment"
-        android:name="com.ritesh.imagetopdf.fragments.SelectPhotoFragment"
-        android:label="select_photo_sheet"
-        tools:layout="@layout/select_photo_sheet" >
         <action
-            android:id="@+id/action_selectPhotoFragment_to_chooseFragment"
-            app:destination="@id/chooseFragment" />
-        <argument
-            android:name="fromOptions"
-            app:argType="boolean" />
-    </dialog>
+            android:id="@+id/action_chooseFragment_to_selectImagesFragment"
+            app:destination="@id/selectImagesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/finishPdfFragment"
         android:name="com.ritesh.imagetopdf.fragments.FinishPdfFragment"
@@ -59,11 +47,24 @@
         android:label="CreatePdfFragment" >
         <action
             android:id="@+id/action_createPdfFragment_to_finishPdfFragment"
-            app:destination="@id/finishPdfFragment" />
+            app:destination="@id/finishPdfFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false"/>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.ritesh.imagetopdf.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/selectImagesFragment"
+        android:name="com.ritesh.imagetopdf.fragments.SelectImagesFragment"
+        android:label="fragment_select_images"
+        tools:layout="@layout/fragment_select_images" >
+        <action
+            android:id="@+id/action_selectImagesFragment_to_chooseFragment"
+            app:destination="@id/chooseFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false"/>
+    </fragment>
 </navigation>

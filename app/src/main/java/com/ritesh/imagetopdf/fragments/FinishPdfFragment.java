@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -19,8 +20,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.ritesh.imagetopdf.R;
+import com.ritesh.imagetopdf.db.AppPref;
 import com.ritesh.imagetopdf.model.Result;
 import com.ritesh.imagetopdf.utils.Utils;
 
@@ -33,6 +36,8 @@ public class FinishPdfFragment extends Fragment{
     private ShapeableImageView pdfThumbnail;
     private MaterialButton share, openPdf;
     private MaterialToolbar toolbar;
+    private MaterialCardView rateLayout;
+    private MaterialButton rateBtn;
     public FinishPdfFragment() {
         // Required empty public constructor
     }
@@ -48,6 +53,8 @@ public class FinishPdfFragment extends Fragment{
         share = view.findViewById(R.id.share);
         openPdf = view.findViewById(R.id.open);
         toolbar = view.findViewById(R.id.toolBar);
+        rateLayout = view.findViewById(R.id.rate_layout);
+        rateBtn = view.findViewById(R.id.rate_app);
         return view;
     }
 
@@ -55,6 +62,8 @@ public class FinishPdfFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        AppPref appPref = AppPref.getInstance(requireContext());
+        rateLayout.setVisibility(appPref.getRateDialogVisibility());
         final Result result = FinishPdfFragmentArgs.fromBundle(getArguments()).getResult();
         File file = new File(result.filePath);
         Uri path = FileProvider.getUriForFile(requireContext(),
@@ -80,14 +89,15 @@ public class FinishPdfFragment extends Fragment{
             startActivity(Intent.createChooser(shareIntent,"Share pdf"));
         });
 
-        toolbar.setNavigationOnClickListener(view1 -> NavHostFragment.findNavController(FinishPdfFragment.this).navigate(R.id.action_finishPdfFragment_to_homeFragment));
+        rateBtn.setOnClickListener(view14 -> {
+            appPref.setRateDialogVisibility();
+            Intent rateIntent = new Intent(Intent.ACTION_VIEW);
+            rateIntent.setData(Uri.parse("market://details?id=" + Utils.APPID));
+            rateIntent.setPackage("com.android.vending");
+            startActivity(rateIntent);
+        });
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                NavHostFragment.findNavController(FinishPdfFragment.this).navigate(R.id.action_finishPdfFragment_to_homeFragment);
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+        toolbar.setNavigationOnClickListener(view1 -> requireActivity().onBackPressed());
+
     }
 }

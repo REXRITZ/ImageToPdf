@@ -46,7 +46,7 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="version">Version</string>
     <string name="clipboard_msg">Text copied to clipboard</string>
-    <string name="emptylistmsg">Cannot create pdf with no images!</string>
+    <string name="emptylistmsg">Please select images to create pdf!</string>
     <string name="done">Done</string>
     <string name="select_all">Select all</string>
     <string name="delete_photos">Delete photos</string>
@@ -54,6 +54,8 @@
     <string name="processing_images">Processing images</string>
     <string name="update_msg">An update has been downloaded</string>
     <string name="share_msg">Hello, Welcome to %s.An app that can convert any image to PDF documents. Fast, easy, and 100%% free.\nGet it at %s</string>
+    <string name="select_images">Select Images</string>
+    <string name="import_text">Import (%d)</string>
     <string-array name="quality">
         <item>@string/low</item>
         <item>@string/medium</item>
@@ -66,5 +68,7 @@
         <item>@string/landscape</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
-
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_photos">Select photos</string>
+    <string name="please_wait">Please wait...</string>
 </resources>
