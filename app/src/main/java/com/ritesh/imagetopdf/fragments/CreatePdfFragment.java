@@ -2,6 +2,7 @@ package com.ritesh.imagetopdf.fragments;
 
 import android.annotation.SuppressLint;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +35,11 @@ import com.ritesh.imagetopdf.utils.Utils;
 import com.ritesh.imagetopdf.viewmodel.PhotosDataViewModel;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -52,7 +56,7 @@ public class CreatePdfFragment extends Fragment implements MakePdfDoc.SaveProgre
     private LinearProgressIndicator progress;
     private TextView progressMessage;
     private AlertDialog dialog;
-    private ArrayList<Uri> imagesList;
+    private List<Uri> imagesList;
     private String path;
     private int orientationPos = 0, qualityPos = 2;
     private String[] orientVal;
@@ -167,8 +171,6 @@ public class CreatePdfFragment extends Fragment implements MakePdfDoc.SaveProgre
         View view = LayoutInflater.from(getContext()).inflate(R.layout.save_progress, null, false);
         progress = view.findViewById(R.id.save_progress);
         progressMessage = view.findViewById(R.id.progress_message);
-        progressMessage.setText(getString(R.string.processing_images));
-        progress.setIndeterminate(true);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(view);
         builder.setTitle(R.string.dialog_savepdf_title);
@@ -177,23 +179,8 @@ public class CreatePdfFragment extends Fragment implements MakePdfDoc.SaveProgre
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                ArrayList<String>res = new ArrayList<>();
-                for (Uri uri : imagesList) {
-                    res.add(getOGPath(uri));
-                }
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progress.setMax(imagesList.size());
-                        progress.setIndeterminate(false);
-                        document.execute(res);
-                    }
-                });
-            }
-        });
+        progress.setMax(imagesList.size());
+        new Handler().postDelayed(() -> document.execute(imagesList,requireContext().getContentResolver()),100);
     }
 
     @Override
@@ -217,22 +204,6 @@ public class CreatePdfFragment extends Fragment implements MakePdfDoc.SaveProgre
             Snackbar snackbar = Snackbar.make(requireActivity().findViewById(android.R.id.content),"Failed to create pdf", Snackbar.LENGTH_LONG);
             snackbar.show();
         }
-    }
-
-    private String getOGPath(Uri uri) {
-        Cursor cursor = requireContext().getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
-        cursor.close();
-
-        cursor = requireContext().getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-        cursor.moveToFirst();
-        @SuppressLint("Range") String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-        cursor.close();
-        return path;
     }
 
     @Override

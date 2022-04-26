@@ -1,9 +1,12 @@
 package com.ritesh.imagetopdf.utils;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.util.Pair;
 
 import com.ritesh.imagetopdf.R;
@@ -22,8 +25,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class MakePdfDoc extends AsyncTask<ArrayList<String>, Integer, String> {
+public class MakePdfDoc extends AsyncTask<Object, Integer, String> {
 
     final SaveProgressListener progressListener;
     int pageWidth = 595;
@@ -74,8 +78,8 @@ public class MakePdfDoc extends AsyncTask<ArrayList<String>, Integer, String> {
         }
     }
 
-    private void convertImageToPdf(String path) throws Exception{
-        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+    private void convertImageToPdf(Uri path, final ContentResolver contentResolver) throws Exception{
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(contentResolver, path);
         PDImageXObject image = JPEGFactory.createFromImage(document, bitmap,quality);
         int w = image.getWidth();
         int h = image.getHeight();
@@ -96,16 +100,17 @@ public class MakePdfDoc extends AsyncTask<ArrayList<String>, Integer, String> {
         contents.close();
     }
 
-    @SafeVarargs
+
     @Override
-    protected final String doInBackground(ArrayList<String>... arrayLists) {
-        ArrayList<String> arrayList = arrayLists[0];
+    protected final String doInBackground(Object... params) {
+        List<Uri> arrayList = (List<Uri>) params[0];
+        ContentResolver contentResolver = (ContentResolver) params[1];
         for (int pageNumber = 0; pageNumber < arrayList.size(); ++pageNumber) {
             if (isCancelled()) {
                 break;
             }
             try {
-                convertImageToPdf(arrayList.get(pageNumber));
+                convertImageToPdf(arrayList.get(pageNumber),contentResolver);
             } catch (Exception e) {
                 e.printStackTrace();
                 return "FAIL";
