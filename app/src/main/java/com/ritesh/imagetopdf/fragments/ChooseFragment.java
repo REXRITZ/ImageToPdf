@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -12,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.ritesh.imagetopdf.viewmodel.PhotosDataViewModel;
@@ -88,7 +86,6 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        toolbar.inflateMenu(R.menu.filter_options);
         navController = NavHostFragment.findNavController(this);
         viewModel = new ViewModelProvider(requireActivity()).get(PhotosDataViewModel.class);
         initLoadDialog();
@@ -121,6 +118,26 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
             }
             return false;
         });
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                setEnabled(true);
+                new MaterialAlertDialogBuilder(requireContext(),R.style.RenameDialogTheme)
+                        .setTitle(R.string.discard_changes)
+                        .setMessage(getString(R.string.discard_msg))
+                        .setPositiveButton(R.string.discard, (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                            setEnabled(false);
+                            requireActivity().onBackPressed();
+                        })
+                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                        })
+                        .show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
     }
 
     final ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {

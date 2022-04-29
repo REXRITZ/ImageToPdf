@@ -51,9 +51,6 @@ public class PhotosDataViewModel extends ViewModel {
     }
 
     public void loadData(Activity activity) {
-//        if (albumPhotosList.getValue() != null) {
-//            return;
-//        }
         List<Album> albumList = new ArrayList<>();
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {

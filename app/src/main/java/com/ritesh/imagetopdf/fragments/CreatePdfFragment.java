@@ -1,8 +1,5 @@
 package com.ritesh.imagetopdf.fragments;
 
-import android.annotation.SuppressLint;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,15 +31,11 @@ import com.ritesh.imagetopdf.utils.Utils;
 import com.ritesh.imagetopdf.viewmodel.PhotosDataViewModel;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 
 public class CreatePdfFragment extends Fragment implements MakePdfDoc.SaveProgressListener {

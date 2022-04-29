@@ -11,10 +11,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -27,11 +25,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.ritesh.imagetopdf.R;
 import com.ritesh.imagetopdf.adapters.AlbumAdapter;
 import com.ritesh.imagetopdf.adapters.AlbumClickListener;
@@ -61,6 +58,7 @@ public class SelectImagesFragment extends Fragment implements View.OnClickListen
     private BottomSheetDialog albumDialog;
     private Uri cameraPhotoUri;
     PhotosDataViewModel viewModel;
+    private MaterialToolbar toolbar;
 
     private final ActivityResultLauncher<String> getGalleryContent = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(),
             this::onPhotosSelected);
@@ -95,6 +93,7 @@ public class SelectImagesFragment extends Fragment implements View.OnClickListen
         recyclerView = view.findViewById(R.id.imagesRecyclerView);
         albumPicker.setOnClickListener(this);
         importBtn.setOnClickListener(this);
+        toolbar = view.findViewById(R.id.toolBar);
         return view;
     }
 
@@ -118,6 +117,7 @@ public class SelectImagesFragment extends Fragment implements View.OnClickListen
                 adapter.updateList(album.get(2).getAlbumImages());
             }
         });
+        toolbar.setNavigationOnClickListener(view1 -> requireActivity().onBackPressed());
     }
 
 

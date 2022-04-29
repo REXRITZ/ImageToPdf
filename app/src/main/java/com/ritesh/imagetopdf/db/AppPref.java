@@ -2,11 +2,8 @@ package com.ritesh.imagetopdf.db;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.view.View;
-
-import java.util.Locale;
 
 public class AppPref {
 

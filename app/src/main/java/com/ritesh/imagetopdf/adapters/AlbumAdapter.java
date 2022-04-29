@@ -1,23 +1,19 @@
 package com.ritesh.imagetopdf.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ritesh.imagetopdf.R;
 import com.ritesh.imagetopdf.model.Album;
-import com.ritesh.imagetopdf.model.ImageItem;
 
 import java.util.List;
 import java.util.Locale;

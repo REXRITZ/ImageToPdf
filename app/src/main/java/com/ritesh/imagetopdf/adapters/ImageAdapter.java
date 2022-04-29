@@ -37,12 +37,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
     public void addItemsToList(List<Uri>images) {
         int start = 0;
-//        if(this.images == null) {
-//            this.images = images;
-//        } else {
-//            start = this.images.size();
-//            this.images.addAll(images);
-//        }
         this.images = images;
         notifyItemRangeInserted(start, images.size());
     }

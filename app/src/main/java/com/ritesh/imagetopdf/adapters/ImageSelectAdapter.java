@@ -17,7 +17,6 @@ import com.ritesh.imagetopdf.model.ImageItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 
 public class ImageSelectAdapter extends RecyclerView.Adapter<ImageSelectAdapter.MyViewHolder>{
 
