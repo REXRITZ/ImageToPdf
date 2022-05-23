@@ -22,7 +22,7 @@ public class ImageSelectAdapter extends RecyclerView.Adapter<ImageSelectAdapter.
 
     private final Context context;
     private List<ImageItem> images;
-    private List<Uri> selectedUris;
+    private final List<Uri> selectedUris;
     private final ImageClickListener clickListener;
     public ImageSelectAdapter(Context context, ImageClickListener clickListener) {
         this.context = context;
@@ -87,9 +87,10 @@ public class ImageSelectAdapter extends RecyclerView.Adapter<ImageSelectAdapter.
 
     static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
-        ShapeableImageView image, checkedIcon;
-        View checkedView;
-        ImageClickListener clickListener;
+        final ShapeableImageView image;
+        final ShapeableImageView checkedIcon;
+        final View checkedView;
+        final ImageClickListener clickListener;
         public MyViewHolder(@NonNull View itemView, ImageClickListener clickListener) {
             super(itemView);
             image = itemView.findViewById(R.id.photo);

@@ -1,12 +1,10 @@
 package com.ritesh.imagetopdf.fragments;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -42,6 +40,7 @@ import com.ritesh.imagetopdf.viewmodel.PhotosDataViewModel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -200,7 +199,7 @@ public class HomeFragment extends Fragment implements PdfItemClickListener, View
         dialog.show();
 
         ok.setOnClickListener(view12 -> {
-            String name = fileInput.getEditText().getText().toString().trim();
+            String name = Objects.requireNonNull(fileInput.getEditText()).getText().toString().trim();
             name += ".pdf";
             if(name.length() == 4) {
                 fileInput.setHelperText(getString(R.string.empty_file_msg));

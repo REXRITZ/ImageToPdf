@@ -50,6 +50,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
         notifyItemChanged(position);
     }
 
+    public void updateItem(int position, Uri uri) {
+        this.images.set(position,uri);
+        notifyItemChanged(position);
+    }
+
     public void selectAllItems() {
         if (getSelectedItemCount() == getItemCount()) {
             return;
@@ -104,7 +109,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        Glide.with(context).load(images.get(position)).into(holder.photo);
+        Glide.with(context)
+                .load(images.get(position))
+                .into(holder.photo);
 
         if (selectedItems.get(position)) {
             holder.check.setVisibility(View.VISIBLE);

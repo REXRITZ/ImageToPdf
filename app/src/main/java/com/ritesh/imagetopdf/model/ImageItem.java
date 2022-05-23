@@ -8,12 +8,14 @@ import java.util.Objects;
 
 public class ImageItem {
 
+    public final int id;
     public final Uri imageUri;
     public boolean isSelected;
 
-    public ImageItem(Uri imageUri) {
+    public ImageItem(int id, Uri imageUri) {
         this.imageUri = imageUri;
         isSelected = false;
+        this.id = id;
     }
 
     @Override
@@ -26,6 +28,7 @@ public class ImageItem {
         }
         ImageItem imageItem = (ImageItem) obj;
         return Objects.equals(this.imageUri, imageItem.imageUri)
-                && Objects.equals(this.isSelected, imageItem.isSelected);
+                && Objects.equals(this.isSelected, imageItem.isSelected)
+                && Objects.equals(this.id, imageItem.id);
     }
 }

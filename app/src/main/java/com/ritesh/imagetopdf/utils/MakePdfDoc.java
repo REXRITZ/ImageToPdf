@@ -69,11 +69,11 @@ public class MakePdfDoc extends AsyncTask<Object, Integer, String> {
 
     public void setQuality(String q, Context context) {
         if(q.equals(context.getString(R.string.high))) {
-            quality = 1f;
+            quality = 0.8f;
         } else if(q.equals(context.getString(R.string.medium))) {
-            quality = 0.7f;
+            quality = 0.6f;
         } else if(q.equals(context.getString(R.string.low))) {
-            quality = 0.5f;
+            quality = 0.4f;
         }
     }
 
@@ -105,6 +105,7 @@ public class MakePdfDoc extends AsyncTask<Object, Integer, String> {
         List<Uri> arrayList = (List<Uri>) params[0];
         ContentResolver contentResolver = (ContentResolver) params[1];
         for (int pageNumber = 0; pageNumber < arrayList.size(); ++pageNumber) {
+            publishProgress(pageNumber);
             if (isCancelled()) {
                 break;
             }
@@ -114,7 +115,6 @@ public class MakePdfDoc extends AsyncTask<Object, Integer, String> {
                 e.printStackTrace();
                 return "FAIL";
             }
-            publishProgress(pageNumber);
         }
         File file = new File(Utils.PATH,fileName);
         try {

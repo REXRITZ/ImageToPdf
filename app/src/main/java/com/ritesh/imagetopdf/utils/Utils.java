@@ -16,6 +16,7 @@ public class Utils {
     public static final String APPID = BuildConfig.APPLICATION_ID;
     public static final String VERSION = BuildConfig.VERSION_NAME;
     public static final String STORE_LINK = "https://play.google.com/store/apps/details?id=" + APPID;
+
     public static String getFormattedDate(Date date) {
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
         simpleDateFormat.applyPattern(pattern);

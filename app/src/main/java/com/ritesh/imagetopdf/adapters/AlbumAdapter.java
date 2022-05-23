@@ -21,7 +21,7 @@ import java.util.Locale;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder>{
 
     private final Context context;
-    private List<Album> albumList;
+    private final List<Album> albumList;
     private final AlbumClickListener clickListener;
     private final int dimen;
     public AlbumAdapter(Context context, List<Album> albumList, AlbumClickListener clickListener) {
@@ -41,7 +41,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Album album = albumList.get(position);
-
         if (position <= 1) {
             holder.albumThumbnail.setPadding(dimen,dimen,dimen,dimen);
             Glide.with(context)
@@ -49,7 +48,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
                     .into(holder.albumThumbnail);
             holder.arrow.setVisibility(View.VISIBLE);
         } else {
-            Glide.with(context).load(album.albumThumbnail).into(holder.albumThumbnail);
+            Glide.with(context).load(album.getAlbumThumbnail()).into(holder.albumThumbnail);
             holder.itemCount.setText(String.format(Locale.getDefault(),"%d", album.getItemCount()));
         }
         holder.albumName.setText(album.albumName);
@@ -62,9 +61,11 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyViewHolder
 
     static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        ImageView albumThumbnail, arrow;
-        TextView albumName, itemCount;
-        AlbumClickListener clickListener;
+        final ImageView albumThumbnail;
+        final ImageView arrow;
+        final TextView albumName;
+        final TextView itemCount;
+        final AlbumClickListener clickListener;
 
         public MyViewHolder(@NonNull View itemView, AlbumClickListener clickListener) {
             super(itemView);

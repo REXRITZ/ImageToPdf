@@ -7,7 +7,8 @@ import com.ritesh.imagetopdf.model.ImageItem;
 import java.util.List;
 
 public class ImageSelectDiffCallback extends DiffUtil.Callback {
-    List<ImageItem> oldList, newList;
+    final List<ImageItem> oldList;
+    final List<ImageItem> newList;
 
     public ImageSelectDiffCallback(List<ImageItem> oldList, List<ImageItem> newList) {
         this.oldList = oldList;

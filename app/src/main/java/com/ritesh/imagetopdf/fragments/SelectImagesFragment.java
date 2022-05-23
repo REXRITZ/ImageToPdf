@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -27,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.ritesh.imagetopdf.R;
@@ -35,9 +37,9 @@ import com.ritesh.imagetopdf.adapters.AlbumClickListener;
 import com.ritesh.imagetopdf.adapters.ImageClickListener;
 import com.ritesh.imagetopdf.adapters.ImageSelectAdapter;
 import com.ritesh.imagetopdf.adapters.ItemDecorator;
-import com.ritesh.imagetopdf.model.Album;
 import com.ritesh.imagetopdf.utils.Utils;
 import com.ritesh.imagetopdf.viewmodel.PhotosDataViewModel;
+import com.ritesh.imagetopdf.viewmodel.SelectImageViewModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,10 +56,9 @@ public class SelectImagesFragment extends Fragment implements View.OnClickListen
     private MaterialButton importBtn;
     private RecyclerView recyclerView;
     private ImageSelectAdapter adapter;
-    private List<Album> albumList;
     private BottomSheetDialog albumDialog;
     private Uri cameraPhotoUri;
-    PhotosDataViewModel viewModel;
+    private SelectImageViewModel viewModel;
     private MaterialToolbar toolbar;
 
     private final ActivityResultLauncher<String> getGalleryContent = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(),
@@ -101,7 +102,7 @@ public class SelectImagesFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(PhotosDataViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(SelectImageViewModel.class);
         recyclerView.addItemDecoration(new ItemDecorator(4));
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         adapter = new ImageSelectAdapter(getContext(),this);
@@ -110,11 +111,16 @@ public class SelectImagesFragment extends Fragment implements View.OnClickListen
         importBtn.setEnabled(false);
         Executors.newSingleThreadExecutor().execute(() -> viewModel.loadData(requireActivity()));
 
-        viewModel.getAlbumPhotosList().observe(getViewLifecycleOwner(), album -> {
-            if (album != null) {
-                albumList = album;
-                albumPicker.setText(album.get(2).albumName);
-                adapter.updateList(album.get(2).getAlbumImages());
+        viewModel.getCurrentAlbum().observe(getViewLifecycleOwner(), albumName -> {
+            if (albumName != null) {
+                albumPicker.setText(albumName);
+            }
+        });
+
+        viewModel.getPhotosList().observe(getViewLifecycleOwner(), imageItems -> {
+            if (imageItems != null) {
+                adapter.updateList(imageItems);
+                recyclerView.scrollToPosition(0);
             }
         });
         toolbar.setNavigationOnClickListener(view1 -> requireActivity().onBackPressed());
@@ -127,10 +133,10 @@ public class SelectImagesFragment extends Fragment implements View.OnClickListen
         if (id == R.id.albumPicker) {
             showAlbumPickerDialog();
         } else if (id == R.id.importBtn) {
-            viewModel.addNewPhotos(adapter.getSelectedImages());
+            PhotosDataViewModel viewModel1 = new ViewModelProvider(requireActivity()).get(PhotosDataViewModel.class);
+            viewModel1.addNewPhotos(adapter.getSelectedImages());
             NavHostFragment.findNavController(this).navigate(R.id.action_selectImagesFragment_to_chooseFragment);
-        }
-    }
+        }    }
 
     @Override
     public void onImageClick(int position) {
@@ -169,8 +175,7 @@ public class SelectImagesFragment extends Fragment implements View.OnClickListen
             //gallery intent
             getGalleryContent.launch("image/*");
         } else {
-            albumPicker.setText(albumList.get(position).albumName);
-            adapter.updateList(albumList.get(position).getAlbumImages());
+            viewModel.setPhotosList(position);
         }
     }
 
@@ -201,11 +206,11 @@ public class SelectImagesFragment extends Fragment implements View.OnClickListen
     private void showAlbumPickerDialog() {
         albumDialog = new BottomSheetDialog(requireContext());
         albumDialog.setContentView(R.layout.image_picker_sheet);
+        albumDialog.getBehavior().setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO, true);
         RecyclerView recyclerView = albumDialog.findViewById(R.id.albumList);
         assert recyclerView != null;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
-        AlbumAdapter adapter = new AlbumAdapter(requireContext(),albumList,this);
+        AlbumAdapter adapter = new AlbumAdapter(requireContext(),viewModel.getAlbumPhotosList().getValue(),this);
         recyclerView.setAdapter(adapter);
         albumDialog.show();
     }

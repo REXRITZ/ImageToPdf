@@ -46,11 +46,11 @@
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
     </style>
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:layout_marginEnd">@dimen/dimen_12</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_6</item>
         <item name="cornerRadius">@dimen/dimen_24</item>
     </style>
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="android:layout_marginStart">@dimen/dimen_12</item>
+        <item name="android:layout_marginStart">@dimen/dimen_6</item>
         <item name="cornerRadius">@dimen/dimen_24</item>
     </style>
 

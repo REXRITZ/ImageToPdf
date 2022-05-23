@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -24,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,10 +45,15 @@ import com.ritesh.imagetopdf.R;
 import com.ritesh.imagetopdf.adapters.ItemDecorator;
 import com.ritesh.imagetopdf.adapters.ImageAdapter;
 import com.ritesh.imagetopdf.adapters.ImageClickListener;
-import com.ritesh.imagetopdf.adapters.PhotosItemClickListener;
 import com.ritesh.imagetopdf.model.ClickMode;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 
 
@@ -62,6 +70,7 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
     private AlertDialog alertDialog;
     private NavController navController;
     private CoordinatorLayout coordinatorLayout;
+    int position = 0;
     public ChooseFragment() {
         // Required empty public constructor
     }
@@ -103,12 +112,12 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
 
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mainRecyclerView);
-        mainRecyclerView.addOnItemTouchListener(new PhotosItemClickListener(getContext(), this));
-
+//        mainRecyclerView.addOnItemTouchListener(new PhotosItemClickListener(getContext(), this));
         toolbar.setNavigationOnClickListener(view1 -> requireActivity().onBackPressed());
 
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.select) {
+                clickMode = ClickMode.IDLE;
                 onImageLongClick(0);
                 return true;
             } else if(item.getItemId() == R.id.drag) {
@@ -131,9 +140,7 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
                             setEnabled(false);
                             requireActivity().onBackPressed();
                         })
-                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
-                            dialogInterface.dismiss();
-                        })
+                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
                         .show();
             }
         };
@@ -194,7 +201,17 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
     @Override
     public void onImageClick(int position) {
         if (clickMode == ClickMode.IDLE) {
-            //open using intent
+            this.position = position;
+            List<Uri> images = adapter.getImagesList();
+            final String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date()) + ".jpg";
+            UCrop.Options options = new UCrop.Options();
+            options.setFreeStyleCropEnabled(true);
+            options.setCompressionQuality(100);
+            options.setActiveControlsWidgetColor(ContextCompat.getColor(requireContext(),R.color.primary));
+            UCrop.of(images.get(position),Uri.fromFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),fileName)))
+                    .withMaxResultSize(720,1280)
+                    .withOptions(options)
+                    .start(requireContext(),this);
         } else if (clickMode == ClickMode.MULTI){
             adapter.toggleSelection(position);
             actionMode.setTitle(String.valueOf(adapter.getSelectedItemCount()));
@@ -214,6 +231,16 @@ public class ChooseFragment extends Fragment implements View.OnClickListener, Ac
             startActionMode();
             adapter.toggleSelection(position);
             actionMode.setTitle(String.valueOf(adapter.getSelectedItemCount()));
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode == UCrop.REQUEST_CROP && data != null) {
+            final Uri resultUri = UCrop.getOutput(data);
+            adapter.updateItem(position,resultUri);
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            Toast.makeText(getContext(), "Error while cropping", Toast.LENGTH_SHORT).show();
         }
     }
 
