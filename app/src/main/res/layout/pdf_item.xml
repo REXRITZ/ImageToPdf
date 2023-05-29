@@ -12,16 +12,14 @@
         android:id="@+id/pdfThumbnail"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:strokeWidth="1dp"
         android:scaleType="centerCrop"
-        app:strokeColor="@color/stroke"
         app:srcCompat="@drawable/ic_pdf_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
-        app:shapeAppearance="@style/RoundedImageStyle" />
+        app:shapeAppearance="@style/RoundedImageStyle"/>
 
     <TextView
         android:id="@+id/file_name"
@@ -30,9 +28,7 @@
         android:layout_marginStart="@dimen/dimen_16"
         android:layout_marginEnd="@dimen/dimen_12"
         android:singleLine="true"
-        android:text="IMGTOPDF_12323_545.pdf"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         app:layout_constraintBottom_toTopOf="@+id/guideline1"
         app:layout_constraintEnd_toStartOf="@id/more_options"
         app:layout_constraintStart_toEndOf="@id/pdfThumbnail" />
@@ -57,8 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen_16"
         android:layout_marginTop="@dimen/dimen_4"
-        android:text="4.1 MB"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
         app:layout_constraintStart_toEndOf="@id/lockImageView"
         app:layout_constraintTop_toBottomOf="@+id/file_name" />
 
@@ -69,26 +64,24 @@
         android:layout_marginStart="@dimen/dimen_24"
         android:layout_marginTop="@dimen/dimen_4"
         android:layout_marginEnd="@dimen/dimen_12"
-        android:text="03/04/2022 10:50"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
         app:layout_constraintEnd_toStartOf="@+id/more_options"
         app:layout_constraintStart_toEndOf="@id/file_size"
         app:layout_constraintTop_toBottomOf="@+id/file_name" />
 
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageButton
         android:id="@+id/more_options"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dimen_6"
+        android:minWidth="40dp"
+        android:minHeight="40dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
         android:src="@drawable/ic_baseline_more_vert_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/CircleImageStyle" />
+        android:contentDescription="More options" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"

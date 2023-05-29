@@ -5,66 +5,79 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.ritesh.imagetopdf.fragments.HomeFragment"
+        android:name="com.ritesh.imagetopdf.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_right"/>
         <action
-            android:id="@+id/action_homeFragment_to_selectImagesFragment"
-            app:destination="@id/selectImagesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/chooseFragment"
-        android:name="com.ritesh.imagetopdf.fragments.ChooseFragment"
-        android:label="fragment_choose"
-        tools:layout="@layout/fragment_choose" >
+            android:id="@+id/action_homeFragment_to_pdfOptionsSheet"
+            app:destination="@id/pdfOptionsSheet" />
         <action
-            android:id="@+id/action_chooseFragment_to_createPdfFragment"
-            app:destination="@id/createPdfFragment" />
-        <action
-            android:id="@+id/action_chooseFragment_to_selectImagesFragment"
-            app:destination="@id/selectImagesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/finishPdfFragment"
-        android:name="com.ritesh.imagetopdf.fragments.FinishPdfFragment"
-        android:label="fragment_finish_pdf"
-        tools:layout="@layout/fragment_finish_pdf" >
-        <action
-            android:id="@+id/action_finishPdfFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true"/>
-        <argument
-            android:name="result"
-            app:argType="com.ritesh.imagetopdf.model.Result" />
-    </fragment>
-    <fragment
-        android:id="@+id/createPdfFragment"
-        android:name="com.ritesh.imagetopdf.fragments.CreatePdfFragment"
-        android:label="CreatePdfFragment" >
-        <action
-            android:id="@+id/action_createPdfFragment_to_finishPdfFragment"
-            app:destination="@id/finishPdfFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="false"/>
+            android:id="@+id/action_homeFragment_to_pdf_creation_graph"
+            app:destination="@id/pdf_creation_graph"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in"
+            app:popExitAnim="@anim/slide_right"/>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.ritesh.imagetopdf.fragments.SettingsFragment"
+        android:name="com.ritesh.imagetopdf.ui.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
-    <fragment
-        android:id="@+id/selectImagesFragment"
-        android:name="com.ritesh.imagetopdf.fragments.SelectImagesFragment"
-        android:label="fragment_select_images"
-        tools:layout="@layout/fragment_select_images" >
-        <action
-            android:id="@+id/action_selectImagesFragment_to_chooseFragment"
-            app:destination="@id/chooseFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="false"/>
-    </fragment>
+    <dialog
+        android:id="@+id/pdfOptionsSheet"
+        android:name="com.ritesh.imagetopdf.ui.home.options.PdfOptionsSheet"
+        android:label="PdfItemOptions" >
+        <argument
+            android:name="pdfId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </dialog>
+    <navigation android:id="@+id/pdf_creation_graph"
+        app:startDestination="@id/imagesFilterFragment">
+        <fragment
+            android:id="@+id/imagesFilterFragment"
+            android:name="com.ritesh.imagetopdf.ui.create.ImagesFilterFragment"
+            android:label="fragment_images_filter"
+            tools:layout="@layout/fragment_images_filter">
+            <action
+                android:id="@+id/action_selectImagesFragment_to_createPdfFragment"
+                app:destination="@id/createPdfFragment"
+                app:enterAnim="@anim/slide_left"
+                app:exitAnim="@anim/slide_out"
+                app:popEnterAnim="@anim/slide_in"
+                app:popExitAnim="@anim/slide_right"/>
+        </fragment>
+        <dialog
+            android:id="@+id/createPdfFragment"
+            android:name="com.ritesh.imagetopdf.ui.create.CreatePdfFragment"
+            android:label="Fragment_create_pdf">
+            <action
+                android:id="@+id/action_createPdfFragment_to_saveProgressDialog"
+                app:destination="@id/saveProgressDialog" />
+        </dialog>
+        <fragment
+            android:id="@+id/finishPdfFragment"
+            android:name="com.ritesh.imagetopdf.ui.create.FinishPdfFragment"
+            android:label="fragment_finish_pdf"
+            tools:layout="@layout/fragment_finish_pdf">
+        </fragment>
+        <dialog
+            android:id="@+id/saveProgressDialog"
+            android:name="com.ritesh.imagetopdf.ui.create.SaveProgressDialog"
+            android:label="SaveProgressDialog" >
+            <action
+                android:id="@+id/action_saveProgressDialog_to_finishPdfFragment"
+                app:destination="@id/finishPdfFragment"
+                app:popUpTo="@id/imagesFilterFragment"
+                app:popUpToInclusive="true"/>
+        </dialog>
+    </navigation>
 </navigation>

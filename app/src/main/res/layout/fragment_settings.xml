@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.SettingsFragment">
+    tools:context=".ui.settings.SettingsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
         android:focusable="true"
         android:text="@string/share_app"
         android:gravity="center_vertical"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         app:drawableStartCompat="@drawable/ic_baseline_share_24" />
 
     <TextView
@@ -46,7 +46,7 @@
         android:focusable="true"
         android:text="@string/rate_app"
         android:gravity="center_vertical"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         app:drawableStartCompat="@drawable/ic_baseline_star_rate_24" />
 
     <LinearLayout
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/dark_mode"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
             android:drawableStart="@drawable/ic_baseline_dark_mode_24"
             android:drawablePadding="22dp"/>
     </LinearLayout>
@@ -86,13 +86,12 @@
             app:drawableStartCompat="@drawable/ic_baseline_info_24"
             android:text="@string/version"
             android:drawablePadding="@dimen/dimen_24"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
 
         <TextView
             android:id="@+id/version_number"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="1.25" />
+            android:gravity="center_vertical"/>
     </LinearLayout>
 </LinearLayout>

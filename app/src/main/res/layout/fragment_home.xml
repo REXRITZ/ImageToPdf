@@ -4,36 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.HomeFragment">
+    tools:context=".ui.home.HomeFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:background="@color/primaryVariant"
-        android:elevation="@dimen/dimen_12">
+        app:liftOnScroll="true">
             <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_collapseMode="pin">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/app_name"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-                <ImageView
-                    android:id="@+id/settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/settings"
-                    android:layout_gravity="end"
-                    android:src="@drawable/ic_baseline_settings_24"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:layout_margin="@dimen/dimen_16"/>
-            </com.google.android.material.appbar.MaterialToolbar>
-
+                app:title="@string/app_name"
+                app:menu="@menu/home"
+                app:layout_scrollFlags="scroll|enterAlways|snap"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -41,7 +26,6 @@
         android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:trackThickness="@dimen/dimen_8"
         app:layout_anchor="@id/appBarLayout"
         android:indeterminate="true"
         app:layout_anchorGravity="bottom"/>
@@ -59,17 +43,38 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dimen_6"
         android:clipToPadding="false"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        app:reverseLayout="true"/>
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
 
+    <LinearLayout
+        android:id="@+id/empty_state_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/dimen_24"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/empty_animation"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:lottie_rawRes="@raw/empty_state_home" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginTop="@dimen/dimen_16"
+            android:text="No pdf files created\n Tap + to get started"/>
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/create_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_16"
-        android:layout_gravity="bottom|center"
+        android:layout_gravity="bottom|end"
         android:contentDescription="@string/create_new_pdf"
         app:fabCustomSize="70dp"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"

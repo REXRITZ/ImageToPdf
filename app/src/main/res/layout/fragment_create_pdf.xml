@@ -1,73 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.CreatePdfFragment">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/dimen_16"
+    android:paddingBottom="@dimen/dimen_8"
+    tools:context=".ui.create.CreatePdfFragment">
 
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="0dp"
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/primaryVariant"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolBar"
-            app:title="Convert to Pdf"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-    </com.google.android.material.appbar.AppBarLayout>
+        android:layout_gravity="center_horizontal"
+        android:minHeight="0dp"
+        android:paddingTop="@dimen/dimen_8"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/file_name_input"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/pdf_file_name"
-        android:layout_marginTop="@dimen/dimen_8"
-        android:layout_marginHorizontal="@dimen/dimen_16"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
         app:helperTextEnabled="true"
         app:helperTextTextColor="@android:color/holo_red_dark"
-        app:boxBackgroundColor="@android:color/transparent"
-        app:endIconMode="clear_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
-
+        app:endIconMode="clear_text">
         <com.google.android.material.textfield.TextInputEditText
+            android:singleLine="true"
+            android:inputType="text"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:imeOptions="actionDone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/password_enabled"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/password"
-        android:paddingHorizontal="@dimen/dimen_16"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/file_name_input" />
+        android:text="Password (optional)"
+        android:layoutDirection="rtl"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:layout_marginTop="@dimen/dimen_4" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_marginTop="@dimen/dimen_6"
         android:id="@+id/password_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:layout_marginHorizontal="@dimen/dimen_16"
         app:helperTextTextColor="@android:color/holo_red_dark"
         app:helperTextEnabled="true"
-        app:boxBackgroundColor="@android:color/transparent"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,85 +60,121 @@
         <com.google.android.material.textfield.TextInputEditText
             android:hint="@string/password"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_height="wrap_content"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:id="@+id/quality"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dimen_sheet_item"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/dimen_16"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textStyle="bold"
+        android:text="Pdf quality"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_input">
+        app:layout_constraintTop_toBottomOf="@id/password_input"
+        android:paddingVertical="@dimen/dimen_8"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.9"
-            android:gravity="center_vertical"
-            android:text="@string/image_quality"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+    <com.ritesh.imagetopdf.ui.GridRadioGroup
+        android:id="@+id/quality_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2">
 
-        <TextView
-            android:id="@+id/quality_text"
+        <RadioButton
+            android:id="@+id/ql"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/high"
-            android:layout_weight="0.1"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:drawablePadding="@dimen/dimen_16"
-            app:drawableEndCompat="@drawable/ic_baseline_arrow_drop_down_24" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/orientation"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dimen_sheet_item"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/dimen_16"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quality">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.9"
-            android:gravity="center_vertical"
-            android:text="@string/orientation"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
-        <TextView
-            android:id="@+id/orientation_text"
+            android:layout_columnWeight="1"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:text="Low (25%)"/>
+        <RadioButton
+            android:id="@+id/qm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/auto"
-            android:layout_weight="0.1"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:drawablePadding="@dimen/dimen_16"
-            app:drawableEndCompat="@drawable/ic_baseline_arrow_drop_down_24" />
-    </LinearLayout>
+            android:layout_columnWeight="1"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:text="Medium (60%)"/>
+        <RadioButton
+            android:id="@+id/qh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:text="High (75%)"/>
+        <RadioButton
+            android:id="@+id/qo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:checked="true"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:text="Original (100%)"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/createPdfBtn"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dimen_sheet_item"
-        android:layout_margin="@dimen/dimen_16"
-        android:text="@string/convert_to_pdf"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        app:cornerRadius="@dimen/dimen_24"
-        app:layout_constraintEnd_toEndOf="parent"
+    </com.ritesh.imagetopdf.ui.GridRadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textStyle="bold"
+        android:text="Pdf orientation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/password_input"
+        android:paddingVertical="@dimen/dimen_8"/>
+
+    <com.ritesh.imagetopdf.ui.GridRadioGroup
+        android:id="@+id/orientation_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3">
+
+        <RadioButton
+            android:id="@+id/oa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:checked="true"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:text="Auto"/>
+        <RadioButton
+            android:id="@+id/op"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:text="Portrait"/>
+        <RadioButton
+            android:id="@+id/ol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:text="Landscape"/>
+    </com.ritesh.imagetopdf.ui.GridRadioGroup>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/dimen_16"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:text="Cancel" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/createPdfBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button"
+            android:layout_gravity="end"
+            android:text="@string/convert_to_pdf" />
+
+    </FrameLayout>
+
+</LinearLayout>

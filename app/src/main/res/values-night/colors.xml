@@ -2,13 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="checked">#6E000000</color>
     <color name="primary">#8ab4f8</color>
     <color name="primaryVariant">#222222</color>
-    <color name="stroke">#1FFFFFFF</color>
 
-    <color name="actionmodetextcolor">#202124</color>
     <color name="folder_icon_stroke">#424242</color>
     <color name="folder_icon_bg">#777777</color>
-    <color name="album_bg">#8dcaff</color>
 </resources>
