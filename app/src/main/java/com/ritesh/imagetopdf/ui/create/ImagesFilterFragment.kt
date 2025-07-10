@@ -119,7 +119,6 @@ class ImagesFilterFragment : Fragment() {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
             emptyAnimation.setOnClickListener {
-                println("YOOO")
                 if(!emptyAnimation.isAnimating) {
                     emptyAnimation.playAnimation()
                 }
