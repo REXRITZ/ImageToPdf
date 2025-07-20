@@ -25,16 +25,7 @@ import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
-
-    private val STORAGE_PERM_CODE = 121
-    private val permissions =
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-        } else {
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
+class HomeFragment : Fragment(){
 
     private var _binding: FragmentHomeBinding ?= null
     private val binding get() = _binding!!
@@ -90,7 +81,8 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         super.onResume()
 
         binding.createBtn.setOnClickListener {
-            checkPermission()
+            findNavController()
+                .navigate(R.id.action_homeFragment_to_pdf_creation_graph)
         }
         binding.toolbar.setOnMenuItemClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
@@ -108,41 +100,6 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         }
         startActivity(openIntent)
-    }
-
-    private fun checkPermission() {
-
-        if (EasyPermissions.hasPermissions(requireContext(),*permissions )) {
-            findNavController()
-                .navigate(R.id.action_homeFragment_to_pdf_creation_graph)
-        } else {
-            EasyPermissions.requestPermissions(
-                this,
-                getString(R.string.permission_rationale),
-                STORAGE_PERM_CODE,
-                *permissions)
-        }
-    }
-
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
-
-
-    override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
-        findNavController()
-            .navigate(R.id.action_homeFragment_to_pdf_creation_graph)
-    }
-
-    override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
-        println(perms)
-        AppSettingsDialog.Builder(this).build().show()
     }
 
     override fun onStop() {
