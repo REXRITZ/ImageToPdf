@@ -20,8 +20,6 @@ import com.ritesh.imagetopdf.databinding.FragmentHomeBinding
 import com.ritesh.imagetopdf.domain.utils.Extensions.toggleVisibility
 import com.ritesh.imagetopdf.domain.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
-import pub.devrel.easypermissions.AppSettingsDialog
-import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 
 @AndroidEntryPoint
